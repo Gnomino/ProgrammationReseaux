@@ -23,7 +23,8 @@ public class ChatServer {
                 ct.start();
             }
         } catch (Exception e) {
-            System.err.println("Error in EchoServer:" + e);
+            System.err.println("Error in Server:");
+            e.printStackTrace();
         }
     }
 
