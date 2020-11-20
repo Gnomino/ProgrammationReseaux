@@ -1,31 +1,31 @@
 package client;
 
-import java.io.BufferedReader;
+import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
+import java.net.DatagramPacket;
+import java.net.MulticastSocket;
 
 public class MessageReceiverThread extends Thread {
 
-    Socket serverSocket;
-    public MessageReceiverThread(Socket serverSocket) {
-        this.serverSocket = serverSocket;
+    MulticastSocket socket;
+    public MessageReceiverThread(MulticastSocket socket) {
+        this.socket = socket;
     }
 
     /**
      *
      */
     public void run() {
-        try {
-            BufferedReader socIn = new BufferedReader(
-                    new InputStreamReader(serverSocket.getInputStream()));
-            String line;
-            while(true) {
-                line = socIn.readLine();
-                System.out.println(line);
+        byte[] buf = new byte[1000];
+        DatagramPacket p = new DatagramPacket(buf, buf.length);
+        while(true) {
+            try {
+                socket.receive(p);
+                String message = new String(buf, 0, p.getLength());
+                System.out.println("[" + p.getAddress() + "] " + message);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

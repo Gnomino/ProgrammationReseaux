@@ -4,8 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 
 public class ChatClient {
     /**
@@ -14,31 +13,32 @@ public class ChatClient {
      **/
     public static void main(String[] args) throws IOException {
 
-        Socket socket = null;
-        PrintStream socOut = null;
-        BufferedReader stdIn = null;
-        BufferedReader socIn = null;
+        MulticastSocket socket = null;
         MessageReceiverThread messageReceiverThread;
+        BufferedReader stdIn = null;
+        stdIn = new BufferedReader(new InputStreamReader(System.in));
 
         if (args.length != 2) {
-            System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port>");
+            System.out.println("Usage: java ChatClient <EchoServer host> <EchoServer port>");
             System.exit(1);
         }
 
+        InetAddress groupAddr = null;
+        int groupPort = Integer.parseInt(args[1]);
         try {
             // creation socket ==> connexion
-            socket = new Socket(args[0], Integer.parseInt(args[1]));
+            groupAddr = InetAddress.getByName(args[0]);
+            socket = new MulticastSocket(groupPort);
+            socket.joinGroup(groupAddr);
 
-            socOut= new PrintStream(socket.getOutputStream());
-            stdIn = new BufferedReader(new InputStreamReader(System.in));
             messageReceiverThread = new MessageReceiverThread(socket);
             messageReceiverThread.start();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host:" + args[0]);
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for "
-                    + "the connection to:"+ args[0]);
+            System.err.println(args[0] + " ; " + groupAddr + " ; " + groupPort);
+            e.printStackTrace();
             System.exit(1);
         }
 
@@ -46,11 +46,10 @@ public class ChatClient {
         while (true) {
             line=stdIn.readLine();
             if (line.equals(".")) break;
-            socOut.println(line);
+            DatagramPacket packet = new DatagramPacket(line.getBytes(), line.length(), groupAddr, groupPort);
+            socket.send(packet);
         }
 
-        socOut.close();
-        socIn.close();
         stdIn.close();
         socket.close();
     }
