@@ -8,6 +8,8 @@ import java.net.Socket;
 
 public class ClientThread extends Thread {
     private Socket clientSocket;
+    private String username;
+    private PrintStream socOut;
 
     ClientThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -21,7 +23,8 @@ public class ClientThread extends Thread {
             BufferedReader socIn = null;
             socIn = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
-
+            socOut = new PrintStream(clientSocket.getOutputStream());
+            username = socIn.readLine();
             while (true) {
                 String line = socIn.readLine();
                 ChatServer.sendMessage(line, this);
@@ -36,9 +39,24 @@ public class ClientThread extends Thread {
      * @param message
      */
     public void sendMessage(String message) {
+        socOut.println(message);
+    }
+
+    /**
+     * @return The username of this client
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Send raw bytes to the client
+     * @param data The bytes to send
+     * @param count The number of bytes to send
+     */
+    public void sendData(byte[] data, int count) {
         try {
-            PrintStream socOut = new PrintStream(clientSocket.getOutputStream());
-            socOut.println(message);
+            clientSocket.getOutputStream().write(data, 0, count);
         } catch (IOException e) {
             e.printStackTrace();
         }
