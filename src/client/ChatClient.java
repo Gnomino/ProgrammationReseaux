@@ -20,8 +20,8 @@ public class ChatClient {
         BufferedReader socIn = null;
         MessageReceiverThread messageReceiverThread;
 
-        if (args.length != 2) {
-            System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port>");
+        if (args.length != 3) {
+            System.out.println("Usage: java EchoClient <EchoServer host> <EchoServer port> <Username>");
             System.exit(1);
         }
 
@@ -31,6 +31,7 @@ public class ChatClient {
 
             socOut= new PrintStream(socket.getOutputStream());
             stdIn = new BufferedReader(new InputStreamReader(System.in));
+            socOut.println(args[2]);
             messageReceiverThread = new MessageReceiverThread(socket);
             messageReceiverThread.start();
         } catch (UnknownHostException e) {
