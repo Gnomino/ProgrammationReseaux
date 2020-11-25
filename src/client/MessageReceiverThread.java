@@ -20,12 +20,12 @@ public class MessageReceiverThread extends Thread {
             BufferedReader socIn = new BufferedReader(
                     new InputStreamReader(serverSocket.getInputStream()));
             String line;
-            while(true) {
+            while(!serverSocket.isClosed()) {
                 line = socIn.readLine();
                 System.out.println(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Connection ended");
         }
     }
 }

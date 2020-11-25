@@ -50,8 +50,6 @@ public class ChatClient {
             socOut.println(line);
         }
 
-        socOut.close();
-        socIn.close();
         stdIn.close();
         socket.close();
     }
