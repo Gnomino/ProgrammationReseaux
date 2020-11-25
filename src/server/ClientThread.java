@@ -25,6 +25,7 @@ public class ClientThread extends Thread {
                     new InputStreamReader(clientSocket.getInputStream()));
             socOut = new PrintStream(clientSocket.getOutputStream());
             username = socIn.readLine();
+            ChatServer.sendJoinMessage(this);
             while (true) {
                 String line = socIn.readLine();
                 ChatServer.sendMessage(line, this);

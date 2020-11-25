@@ -18,7 +18,7 @@ public class ChatServer {
             System.out.println("Server ready...");
             while (true) {
                 Socket clientSocket = listenSocket.accept();
-                System.out.println("Connexion from:" + clientSocket.getInetAddress());
+                System.out.println("Connection from:" + clientSocket.getInetAddress());
                 ClientThread ct = new ClientThread(clientSocket);
                 clientThreads.add(ct);
                 ct.start();
@@ -70,9 +70,21 @@ public class ChatServer {
                 client.sendData(buffer, count);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Warning: the history file does not exist yet");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends a message to everyone notifying them of the user joining
+     * @param client The client that has joined
+     */
+    public static void sendJoinMessage(ClientThread client) {
+        String joinMessage = client.getUsername() + " has just joined the chat !";
+        saveMessage(joinMessage);
+        for (ClientThread clientThread : clientThreads) {
+            clientThread.sendMessage(joinMessage);
         }
     }
 }
