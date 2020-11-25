@@ -26,13 +26,18 @@ public class ClientThread extends Thread {
             socOut = new PrintStream(clientSocket.getOutputStream());
             username = socIn.readLine();
             ChatServer.sendJoinMessage(this);
-            while (true) {
+            while (!clientSocket.isClosed()) {
                 String line = socIn.readLine();
-                ChatServer.sendMessage(line, this);
+                if(line != null) {
+                    ChatServer.sendMessage(line, this);
+                } else {
+                    break;
+                }
             }
         } catch (Exception e) {
             System.err.println("Error in EchoServer:" + e);
         }
+        ChatServer.deregisterClient(this);
     }
 
     /**

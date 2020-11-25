@@ -87,4 +87,17 @@ public class ChatServer {
             clientThread.sendMessage(joinMessage);
         }
     }
+
+    /**
+     * Removes a client thread from the list of active sockets and sends a leave message
+     * @param client The client thread to remove
+     */
+    public static void deregisterClient(ClientThread client) {
+        clientThreads.remove(client);
+        String leaveMessage = client.getUsername() + " has just left the chat.";
+        saveMessage(leaveMessage);
+        for(ClientThread clientThread : clientThreads) {
+            clientThread.sendMessage(leaveMessage);
+        }
+    }
 }
