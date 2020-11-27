@@ -7,14 +7,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatServer {
+    /**
+     * The list of threads for connected clients
+     */
+    protected static List<ClientThread> clientThreads = new ArrayList<>();
 
-    private static List<ClientThread> clientThreads = new ArrayList<>();
+    /**
+     * The listening port of the chat server
+     */
+    protected static final int PORT = 1234;
+
+    /**
+     * The path to the message history file
+     * The file will be created if it doesn't already exist
+     */
+    protected static final String HISTORY_FILE = "message_log.txt";
 
     public static void main(String args[]){
         ServerSocket listenSocket;
 
         try {
-            listenSocket = new ServerSocket(1234); //port
+            listenSocket = new ServerSocket(PORT);
             System.out.println("Server ready...");
             while (true) {
                 Socket clientSocket = listenSocket.accept();
@@ -50,7 +63,7 @@ public class ChatServer {
      * @param message the message to save
      */
     private static void saveMessage(String message) {
-        try (FileWriter fw = new FileWriter("message_log.txt", true)) {
+        try (FileWriter fw = new FileWriter(HISTORY_FILE, true)) {
             fw.write(message);
             fw.write(System.lineSeparator());
         } catch (IOException e) {
@@ -63,7 +76,7 @@ public class ChatServer {
      * @param client A client that has just joined
      */
     private static void sendHistory(ClientThread client) {
-        try (FileInputStream fis = new FileInputStream("message_log.txt")) {
+        try (FileInputStream fis = new FileInputStream(HISTORY_FILE)) {
             byte[] buffer = new byte[1024];
             int count;
             while ((count = fis.read(buffer)) > 0) {

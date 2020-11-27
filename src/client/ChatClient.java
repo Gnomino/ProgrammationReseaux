@@ -9,8 +9,8 @@ import java.net.UnknownHostException;
 
 public class ChatClient {
     /**
-     *  main method
-     *  accepts a connection, receives a message from client then sends an echo to the client
+     * The main method establishes a connection to the server, created a MessageReceiverThread
+     * and listens for user input to send their messages to the server
      **/
     public static void main(String[] args) throws IOException {
 
