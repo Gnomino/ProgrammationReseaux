@@ -1,0 +1,4 @@
+This project was made as a part of our RE1 networking class.
+
+The "master" branch corresponds to the first implementation using TCP, and a server-client architecture,
+while the "multicast" branch implements the direct connection of clients to Multicast groups.
