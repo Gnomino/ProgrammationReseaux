@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="473.0" layoutY="8.0" mnemonicParsing="false" text="Connect to server " />
+      <Group layoutX="15.0" layoutY="69.0">
+         <children>
+            <TextArea prefHeight="270.0" prefWidth="570.0" />
+            <ScrollBar layoutX="555.0" layoutY="1.0" orientation="VERTICAL" prefHeight="268.0" prefWidth="14.0" />
+         </children>
+      </Group>
+      <TextField layoutX="52.0" layoutY="8.0" />
+      <Label layoutX="14.0" layoutY="12.0" text="IP : " />
+      <TextField layoutX="258.0" layoutY="8.0" prefHeight="25.0" prefWidth="49.0" />
+      <Label layoutX="220.0" layoutY="12.0" text="Port :" />
+      <TextField layoutX="366.0" layoutY="8.0" prefHeight="25.0" prefWidth="97.0" />
+      <Label layoutX="322.0" layoutY="12.0" text="Name :" />
+      <TextField layoutX="85.0" layoutY="350.0" prefHeight="25.0" prefWidth="397.0" />
+      <Label layoutX="15.0" layoutY="354.0" text="Message  : " />
+      <Button layoutX="492.0" layoutY="350.0" mnemonicParsing="false" text="Send Message" />
+   </children>
+</Pane>
